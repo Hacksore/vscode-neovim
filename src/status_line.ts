@@ -1,5 +1,13 @@
 import * as vscode from "vscode";
 
+const MODE_ICON: { [key: string]: string } = {
+    insert: "🟢",
+    visualline: "🟡",
+    visualblock: "🟡",
+    visual: "🟡",
+    replace: "🔵",
+};
+
 export class StatusLineController implements vscode.Disposable {
     private modeItem: vscode.StatusBarItem;
     private commandItem: vscode.StatusBarItem;
@@ -15,7 +23,9 @@ export class StatusLineController implements vscode.Disposable {
         if (!str) {
             this.modeItem.hide();
         } else {
-            this.modeItem.text = str;
+            const iconName: string = str.replace(/-|\s/g, "").toLowerCase();
+            this.modeItem.text = MODE_ICON[iconName] + "  " + str;
+            this.modeItem.color = "rgba(255,255,255)";
             this.modeItem.show();
         }
     }
